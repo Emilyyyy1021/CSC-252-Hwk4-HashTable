@@ -1,6 +1,6 @@
 # Name:  - Emily Wang & Tanya Chen
 # Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
-# References:  - URL of resources used <br>
+# References:  - https://www.datacamp.com/tutorial/python-linked-lists
 import math # pyright: ignore[reportUnusedImport]
 import time
 import csv          # Used to read a .csv file.
@@ -41,6 +41,20 @@ class HashNode:
 ### END OF DO NOT EDIT###
 
 # Hint: create a linked list class here...
+class LinkedList:
+    def __init__(self):
+        self.head = None 
+    
+    def insertAtEnd(self, data: str):
+        new_node = Node(data)  # Create a new node
+        if self.head is None:
+            self.head = new_node  # If the list is empty, make the new node the head
+            return
+        last = self.head 
+        while last.next:  # Otherwise, traverse the list to find the last node
+            last = last.next
+        last.next = new_node  # Make the new node the next node of the last node
+
 class Node:
     """Class to instantiate linked list node objects
     >>> node = Node(Matt Damon)
@@ -50,7 +64,7 @@ class Node:
      
     def __init__(self, data: str) -> None:
         self.data = data
-        self.next: Node | None = None 
+        self.next: Node | None 
 
     def __str__(self) -> str:
         return "{data:" + str(self.data) + "}"   
@@ -90,6 +104,7 @@ class HashTable:
         if slot == None: #put the value into the array 
             slot = val
             return True
+        #maybe use linked list to rewrite
         elif slot != None: #something in the slot
             if slot == str: 
                 slot = Node(slot) #make first slot into linked list
