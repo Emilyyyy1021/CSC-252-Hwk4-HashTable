@@ -1,4 +1,4 @@
-# Name:  - your name (and your partners name) <br>
+# Name:  - Emily Wang & Tanya Chen
 # Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
 # References:  - URL of resources used <br>
 import math # pyright: ignore[reportUnusedImport]
@@ -40,12 +40,21 @@ class HashNode:
         return "{key:" + str(self.key) + ", value:" + self.value + "}"     
 ### END OF DO NOT EDIT###
 
-
-
-
 # Hint: create a linked list class here...
+class Node:
+    """Class to instantiate linked list node objects
+    >>> node = Node(Matt Damon)
+    >>> print(node)
+    Matt Damon
+    """
+     
+    def __init__(self, data: str) -> None:
+        self.data = data
+        self.next: Node | None = None 
 
-
+    def __str__(self) -> str:
+        return "{data:" + str(self.data) + "}"   
+    
 
 class HashTable:
     
@@ -53,7 +62,7 @@ class HashTable:
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
-        pass
+        self.array = [None] * size
     
     def __str__(self) -> str:
         return "Hash Table"
@@ -64,7 +73,7 @@ class HashTable:
         if self.hash_choice == 0:
             return hash(key) % self.size    #Embedded Python hash function.
         elif self.hash_choice == 1:
-            return 0    #Everything in the has ia stored in a single linked list.
+            return 0    #Everything in the hash is stored in a single linked list.
         elif self.hash_choice == 2:
             pass #TODO Implement your has functions here.
         elif self.hash_choice == 3:
@@ -74,9 +83,27 @@ class HashTable:
         return None
     
     def insert(self, key:int, val:str) -> bool:
+        index = self.hashFunc(key) #find index with hash function
+        if index is None: #no index
+            return False
+        slot = self.array[index] #yes index
+        if slot == None: #put the value into the array 
+            slot = val
+            return True
+        elif slot != None: #something in the slot
+            if slot == str: 
+                slot = Node(slot) #make first slot into linked list
+                slot.next = Node(val) #attach new node
+                return True
+            else:
+                while slot.next is not None: #attach the node to the end
+                    slot = slot.next
+                slot.next = Node(val)
+                return True
         return False
 
     def getValue(self, key:int) -> str|None:
+        
         return None
 
     def remove(self, key:int) -> bool:
