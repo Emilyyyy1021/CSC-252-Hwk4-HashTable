@@ -95,8 +95,27 @@ class HashTable:
         return True
     
     def getValue(self, key:int) -> str|None:
-        #tanya
-        return None
+        """ Given key, get corresponding value if key is stored in hash table
+        :param self (Do we need to write self tho?
+        :param key: (int) 
+
+        >>> value = getValue(1)
+        >>> print(value)
+        "3"
+        """
+        # Check whether key is in hash table by letting it passes through hash function
+        index:int|None = HashTable.hashFunc(self,key)
+        # If DNE: return None
+        if index == None:
+            return None
+        
+        if index > len(self.array) or index < 0:
+            return None
+        
+        # If key exists: return value
+        value = str(self.array[index]) # Is it correct?
+
+        return value
 
     def remove(self, key:int) -> bool:
         #tanya
