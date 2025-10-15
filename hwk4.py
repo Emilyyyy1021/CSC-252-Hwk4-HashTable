@@ -31,7 +31,7 @@ class HashNode:
         """
         self.key = key
         self.value = value
-        self.next = None
+        self.next: HashNode | None = None
         
     def __str__(self) -> str:
         """ Returns a string representation of the object.
@@ -45,8 +45,10 @@ class LinkedList:
     def __init__(self):
         self.head = None 
     
-    def insertAtEnd(self, data: str):
-        new_node = Node(data)  # Create a new node
+    def insertAfter(self, key: int, value: str):
+        #I just feel like I want the new node to be at the end
+        #it can be the first one, and it will be more efficient
+        new_node = HashNode(key, value)  # Create a new node
         if self.head is None:
             self.head = new_node  # If the list is empty, make the new node the head
             return
@@ -55,28 +57,15 @@ class LinkedList:
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
-class Node:
-    """Class to instantiate linked list node objects
-    >>> node = Node(Matt Damon)
-    >>> print(node)
-    Matt Damon
-    """
-     
-    def __init__(self, data: str) -> None:
-        self.data = data
-        self.next: Node | None 
-
-    def __str__(self) -> str:
-        return "{data:" + str(self.data) + "}"   
-    
+    def removeAfter(self, key:int, value: str):
+        pass
 
 class HashTable:
-    
     def __init__(self, size:int, hash_choice:int) -> None:
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
-        self.array = [None] * size
+        self.array = new_array(size)
     
     def __str__(self) -> str:
         return "Hash Table"
@@ -100,28 +89,17 @@ class HashTable:
         index = self.hashFunc(key) #find index with hash function
         if index is None: #no index
             return False
-        slot = self.array[index] #yes index
-        if slot == None: #put the value into the array 
-            slot = val
-            return True
-        #maybe use linked list to rewrite
-        elif slot != None: #something in the slot
-            if slot == str: 
-                slot = Node(slot) #make first slot into linked list
-                slot.next = Node(val) #attach new node
-                return True
-            else:
-                while slot.next is not None: #attach the node to the end
-                    slot = slot.next
-                slot.next = Node(val)
-                return True
-        return False
-
+        # index exsists
+        #LinkedList.insertAfter(index, value)
+        return True
+    
     def getValue(self, key:int) -> str|None:
-        
+        #tanya
         return None
 
     def remove(self, key:int) -> bool:
+        #tanya
+        #call linked list function
         return False
     
     def isOverLoadFactor(self) -> bool:
@@ -133,7 +111,9 @@ class HashTable:
 def testMain() -> None:            
     # Use this function to test your code as you develop, especially your singly-linked list. 
     # Review, but do not use, profileMain or releaseMain until you are well into development.
-    pass
+    hash_table = HashTable(10, 0)
+    hash_table.insert(10, "bubble tea")
+    hash_table.insert(10, "coffee")
 
 
 def releaseMain() -> None:
