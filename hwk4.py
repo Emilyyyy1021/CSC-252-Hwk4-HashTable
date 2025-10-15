@@ -1,5 +1,5 @@
 # Name:  - Emily Wang & Tanya Chen
-# Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
+# Peers:  - Olohi
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
 #              - CSC210 Linked List Assignment
 import math
@@ -80,7 +80,10 @@ class LinkedList:
         last.next = new_node  # Make the new node the next node of the last node
 
     def removeAfter(self, key:int):
-        """
+        """ Remove the node in a linked list if they have given key
+        : param key: (int) The key that is converted to the index of the location of value through hash function
+        
+        >>> 
         
         """
         
@@ -98,30 +101,23 @@ class LinkedList:
                 current.next = current.next.next
 
             current = current.next
-                
-        # prev = self.head 
-        # if prev.next is None:
-        #     return None
-        # current = prev.next
-        # while current.next:  
-        #     if current.key == key:
-        #         prev = current.next
-        #     current = current.next
+
 
     def list_length(self)-> int:
-        """Find the length of the linked list
+        """Find the length of the linked list that contains proper value
+        : return : (int) The length of the linked list
         
+        >>> list.list_length()
+        2
         """
         count = 0
         node = self.head
-        if node == None:
-            return count
-        else:
-            while node != None:
-                count += 1
-                node = node.next
 
-            return count
+        while node is not None:
+            count += 1
+            node = node.next
+
+        return count
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
@@ -229,7 +225,9 @@ class HashTable:
             
 
     def remove(self, key:int) -> bool:
-        """
+        """ Remove key, value pairs from the hash table
+        :param key: (int) the key of the key value pair
+        : return : (bool) 
         
         """
         #If the key is not in the hash table, return false
@@ -249,18 +247,8 @@ class HashTable:
                 self.array[index].head = None
                 return True
             else:
-                # matching_val = self.array[index].head.value
                 self.array[index].removeAfter(key)
                 return True
-
-            # self.array[index].remove(key)
-            # return True
-
-        # if key != self.array[index]:
-        #     return False
-        # else:
-        #     self.array[index].head = None
-        #     return True
     
     def isOverLoadFactor(self) -> bool:
         """ Calculate the loaf factor of a hash table and check whether LF is greater than 0.7
@@ -271,11 +259,15 @@ class HashTable:
         """
         # Find filled blocks in array
         count = 0
-        for i in range(len(self.array)):
+        
+        # For each block in array, we are checking whether 
+        for i in range(self.size):
             if self.array[i].head is not None:
                 # If key value pair exists, count how many nodes exists 
                 list = self.array[i]
                 count += list.list_length()
+
+        print(count)
 
         # # Calculate load factor using the equation: /total number
         load_factor = count/self.size
@@ -287,11 +279,38 @@ class HashTable:
         return False
     
     def reHash(self) -> bool:
-        # Create an array with double original size
-        # new_arr = new_array(2*self.size)
+        """ Resize the hash table if our hash table is over load factor
+        :return : (bool) Whether the hash table is resized
+
+        >>>
         
-        # 
-        return False
+        """
+        # Check whether the hash table is over load factor
+        # If true, reside the hash table
+        if HashTable.isOverLoadFactor(self):
+            # Create an array with double original size
+            new_size = self.size * 2
+            new_arr = [LinkedList()] * new_size
+
+            self.size = new_size
+
+            # Loop through original array
+            # Let each key go through hash function again
+            # Add key, value pair to the new array
+            for i in range(len(self.array)):
+                node = self.array[i].head
+                while node is not None:
+                    index = HashTable.hashFunc(self, node.key)
+                    if index is not None:
+                        new_arr[index].insertAfter(node.key, node.value)
+                    node = node.next
+
+            # After the loop, update the array in constructor as the new_array
+            self.array = new_arr
+            # 
+            return True
+        else:
+            return False
 
 def testMain() -> None:            
     # Use this function to test your code as you develop, especially your singly-linked list. 
@@ -301,10 +320,17 @@ def testMain() -> None:
     print(hash_table.insert(15, "coffee"))
 
     print(hash_table.getValue(10))
+    print(hash_table.getValue(9))
 
     print(hash_table.isOverLoadFactor())
 
+    print(hash_table.reHash())
+
     print(hash_table.remove(10))
+    print(hash_table.reHash())
+
+    releaseMain()
+    profilerMain()
 
 
 def releaseMain() -> None:
