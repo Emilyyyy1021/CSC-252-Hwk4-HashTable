@@ -110,7 +110,14 @@ class HashTable:
         elif self.hash_choice == 1:
             return 0    #Everything in the hash is stored in a single linked list.
         elif self.hash_choice == 2:
-            pass #TODO Implement your has functions here.
+            # Module the given index with 5 and times the original key with its module
+            mod = key%5
+            revised_key = key*mod
+
+            # Module the result with its size
+            revised_key = revised_key%self.size
+            return revised_key
+            
         elif self.hash_choice == 3:
             pass #TODO Implement your has functions here.
         elif self.hash_choice == 4:
@@ -150,22 +157,18 @@ class HashTable:
         if index > len(self.array) or index < 0:
             return None
         
-        # If key exists: loop through the linked list to find the matching key and their value
-
         if self.array[index] == 0:
             return None
+        else:
+            # If key exists: loop through the linked list to find the matching key and their value
 
-        # If key exists: return value
-        value = str(self.array[index]) # Is it correct? 
+            node = self.array[index].head #type:ignore
 
-        node = self.array[index].head #type:ignore
-
-        # while node.next is not None: #type:ignore
-        #     if node.key == key: #type:ignore
-        #         return node.value #type:ignore
-        #     node = node.next #type:ignore
+            while node.next is not None: #type:ignore
+                if node.key == key: #type:ignore
+                    return node.value #type:ignore
+                node = node.next #type:ignore
             
-        return value
 
     def remove(self, key:int) -> bool:
         # Rewrite the pseudo code a little
