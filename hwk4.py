@@ -44,16 +44,32 @@ class HashNode:
 # Hint: create a linked list class here...
 class LinkedList:
     def __init__(self):
+        """ Constructor of linked list. Initial list is empty.  
+        """
         self.head:  HashNode | None = None
     
     def insertAtBeginning(self, key: int, value: str):
+        """ Insert a node into linked list containing the info of the key and the value. 
+        This will add the node as the first element of the list. 
+        :param key: (int) The key to access the value
+        :param val: (string) The value need to be stored
+
+        >>> insertAtBeginning(10, "bubble tea")
+        Create a node for this info and add to linked list as the first element
+        """
         node = HashNode(key, value)  # Create a new node 
         node.next = self.head  # Next for new node becomes the current head
         self.head = node  # Head now points to the new node
 
     def insertAfter(self, key: int, value: str):
-        #I just feel like I want the new node to be at the end
-        #it can be the first one, and it will be more efficient
+        """ Insert a node into linked list containing the info of the key and the value. 
+        This will add the node as the last element of the list. 
+        :param key: (int) The key to access the value
+        :param val: (string) The value need to be stored
+
+        >>> insertAfter(10, "bubble tea")
+        Create a node for this info and add to linked list to the end
+        """
         new_node = HashNode(key, value)  # Create a new node
         if self.head is None:
             self.head = new_node  # If the list is empty, make the new node the head
@@ -105,6 +121,10 @@ class LinkedList:
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
+        """Class to instantiate the Hash Table, which is an array of linked lists. 
+        :param size: (int) The size of the array
+        :param hash_choice: (int) Choosing which has function to use
+        """
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
@@ -113,9 +133,19 @@ class HashTable:
         # self.list = LinkedList() 
     
     def __str__(self) -> str:
+        """ Returns a string representation of the Hash Table.
+        :return : (str) a visual representation of the Hash Table
+        """
         return "Hash Table"
         
     def hashFunc(self, key:int) -> int|None:
+        """Determine which hash function to use
+        :param key: (int) the key of the variable needs to be stored
+        :return : (int) the result of hash function (the index to store)
+
+        >>> hashFunc(10)
+        5
+        """
         if type(key) != int:
             return None
         if self.hash_choice == 0:
@@ -134,13 +164,21 @@ class HashTable:
         elif self.hash_choice == 3:
             integer = key ** (1/3)
             remainder = key % integer
-            return remainder
+            return int(remainder)
         elif self.hash_choice == 4:
             num = math.log(key)
             return int(num)
         return None
     
     def insert(self, key:int, val:str) -> bool:
+        """ Insert a node into the hash table containing the info of the key and the value. 
+        :param key: (int) The key to access the value
+        :param val: (string) The value need to be stored
+        : return : (bool) If the node is inserted, return True. If otherwise, return False
+
+        >>> print(insert(10, "bubble tea"))
+        True
+        """
         index = self.hashFunc(key) #find index with hash function
         #print(index)
         if index is None: #no index
@@ -389,3 +427,5 @@ if __name__ == "__main__":
     #profilerMain()     
     #releaseMain()
     
+
+
