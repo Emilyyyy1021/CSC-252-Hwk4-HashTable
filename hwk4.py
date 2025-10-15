@@ -1,5 +1,5 @@
 # Name:  - Emily Wang & Tanya Chen
-# Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
+# Peers:  - Olohi
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
 #              - CSC210 Linked List Assignment
 import math
@@ -88,7 +88,7 @@ class LinkedList:
 
 
     def list_length(self)-> int:
-        """Find the length of the linked list that contains proper 
+        """Find the length of the linked list that contains proper value
         : return : (int) The length of the linked list
         
         >>> list.list_length()
@@ -96,14 +96,12 @@ class LinkedList:
         """
         count = 0
         node = self.head
-        if node is None:
-            return count
-        else:
-            while node != None:
-                count += 1
-                node = node.next
 
-            return count
+        while node is not None:
+            count += 1
+            node = node.next
+
+        return count
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
@@ -189,7 +187,9 @@ class HashTable:
             
 
     def remove(self, key:int) -> bool:
-        """
+        """ Remove key, value pairs from the hash table
+        :param key: (int) the key of the key value pair
+        : return : (bool) 
         
         """
         #If the key is not in the hash table, return false
@@ -209,18 +209,8 @@ class HashTable:
                 self.array[index].head = None
                 return True
             else:
-                # matching_val = self.array[index].head.value
                 self.array[index].removeAfter(key)
                 return True
-
-            # self.array[index].remove(key)
-            # return True
-
-        # if key != self.array[index]:
-        #     return False
-        # else:
-        #     self.array[index].head = None
-        #     return True
     
     def isOverLoadFactor(self) -> bool:
         """ Calculate the loaf factor of a hash table and check whether LF is greater than 0.7
@@ -231,7 +221,9 @@ class HashTable:
         """
         # Find filled blocks in array
         count = 0
-        for i in range(len(self.array)):
+        
+        # For each block in array, we are checking whether 
+        for i in range(self.size):
             if self.array[i].head is not None:
                 # If key value pair exists, count how many nodes exists 
                 list = self.array[i]
@@ -290,10 +282,17 @@ def testMain() -> None:
     print(hash_table.insert(15, "coffee"))
 
     print(hash_table.getValue(10))
+    print(hash_table.getValue(9))
 
     print(hash_table.isOverLoadFactor())
 
+    print(hash_table.reHash())
+
     print(hash_table.remove(10))
+    print(hash_table.reHash())
+
+    releaseMain()
+    profilerMain()
 
 
 def releaseMain() -> None:
