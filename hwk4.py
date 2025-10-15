@@ -1,6 +1,7 @@
 # Name:  - Emily Wang & Tanya Chen
 # Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
+#              - CSC210 Linked List Assignment
 import math # pyright: ignore[reportUnusedImport]
 import time
 import csv          # Used to read a .csv file.
@@ -63,6 +64,22 @@ class LinkedList:
         last.next = new_node  # Make the new node the next node of the last node
 
     def remove(self, key:int, value: str):
+        """
+        
+        """
+        # Question whether it works/we need it
+        new_node = HashNode(key, value)
+        
+        if self.head is None:
+            self.head = new_node
+            return
+        
+        temp = self.head
+
+        while temp.next != None:
+            if temp.next.key == key:
+                temp.next = temp.next.next
+                
         # prev = self.head 
         # if prev.next is None:
         #     return None
@@ -133,6 +150,8 @@ class HashTable:
         if index > len(self.array) or index < 0:
             return None
         
+        # If key exists: loop through the linked list to find the matching key and their value
+
         if self.array[index] == 0:
             return None
 
@@ -149,9 +168,30 @@ class HashTable:
         return value
 
     def remove(self, key:int) -> bool:
-        #tanya
-        #call linked list function
-        return False
+        # Rewrite the pseudo code a little
+        # Return FALSE if
+        #               1. there is nothing in array/hash table
+        #               2. there is nothing (0) in the array of corresponding index
+        # Return TRUE if we successfully removed value and key
+        # 
+
+        #If the key is not in the hash table, return false
+        index = HashTable.hashFunc(self, key)
+
+        if index == None:
+            return False
+        elif index > len(self.array) or index < 0:
+            return False
+        elif self.array[index] == 0:
+            return False
+        
+        # Remove key value pair if key exists
+        # Check whether the hash function is hashing 2 keys to the same index
+        if key != self.array[index]:
+            return False
+        else:
+            self.array[index] = 0
+            return True
     
     def isOverLoadFactor(self) -> bool:
         """ Calculate the loaf factor of a hash table and check whether LF is greater than 0.7
@@ -176,6 +216,10 @@ class HashTable:
         return False
     
     def reHash(self) -> bool:
+        # Create an array with double original size
+        # new_arr = new_array(2*self.size)
+        
+        # 
         return False
 
 def testMain() -> None:            
