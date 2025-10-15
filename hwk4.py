@@ -44,8 +44,13 @@ class HashNode:
 # Hint: create a linked list class here...
 class LinkedList:
     def __init__(self):
-        self.head = None 
+        self.head:  HashNode | None = None
     
+    def insertAtBeginning(self, key: int, value: str):
+        node = HashNode(key, value)  # Create a new node 
+        node.next = self.head  # Next for new node becomes the current head
+        self.head = node  # Head now points to the new node
+
     def insertAfter(self, key: int, value: str):
         #I just feel like I want the new node to be at the end
         #it can be the first one, and it will be more efficient
@@ -58,7 +63,7 @@ class LinkedList:
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
-    def removeAfter(self, key:int, value: str):
+    def remove(self, key:int, value: str):
         """
         
         """
@@ -75,14 +80,24 @@ class LinkedList:
             if temp.next.key == key:
                 temp.next = temp.next.next
                 
+        # prev = self.head 
+        # if prev.next is None:
+        #     return None
+        # current = prev.next
+        # while current.next:  
+        #     if current.key == key:
+        #         prev = current.next
+        #     current = current.next
+        pass
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
-        self.array = new_array(size)
-        self.list = LinkedList()
+        self.array = new_array(size) 
+        # self.array = [None] * size
+        self.list = LinkedList() 
     
     def __str__(self) -> str:
         return "Hash Table"
@@ -104,11 +119,16 @@ class HashTable:
     
     def insert(self, key:int, val:str) -> bool:
         index = self.hashFunc(key) #find index with hash function
+        #print(index)
         if index is None: #no index
             return False
         # index exsists
-        self.list.insertAfter(index, val)
-        return True
+        if self.array[index] == 0:
+            self.array[index] = LinkedList() #type: ignore
+        inside_list: LinkedList = self.array[index]  #type: ignore
+        inside_list.insertAfter(key, val)
+
+        return True 
     
     def getValue(self, key:int) -> str|None:
         """ Given key, get corresponding value if key is stored in hash table
@@ -119,8 +139,10 @@ class HashTable:
         >>> print(value)
         "3"
         """
+
         # Check whether key is in hash table by letting it passes through hash function
         index:int|None = HashTable.hashFunc(self,key)
+        #print(index)
         # If DNE: return None
         if index == None:
             return None
@@ -130,8 +152,19 @@ class HashTable:
         
         # If key exists: loop through the linked list to find the matching key and their value
 
-        value = str(self.array[index]) # Is it correct?
+        if self.array[index] == 0:
+            return None
 
+        # If key exists: return value
+        value = str(self.array[index]) # Is it correct? 
+
+        node = self.array[index].head #type:ignore
+
+        # while node.next is not None: #type:ignore
+        #     if node.key == key: #type:ignore
+        #         return node.value #type:ignore
+        #     node = node.next #type:ignore
+            
         return value
 
     def remove(self, key:int) -> bool:
@@ -193,8 +226,12 @@ def testMain() -> None:
     # Use this function to test your code as you develop, especially your singly-linked list. 
     # Review, but do not use, profileMain or releaseMain until you are well into development.
     hash_table = HashTable(10, 0)
-    hash_table.insert(10, "bubble tea")
-    hash_table.insert(10, "coffee")
+    print(hash_table.insert(10, "bubble tea"))
+    print(hash_table.insert(15, "coffee"))
+
+    print(hash_table.getValue(10))
+
+    print(hash_table.isOverLoadFactor())
 
 
 def releaseMain() -> None:
