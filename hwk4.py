@@ -2,7 +2,7 @@
 # Peers:  - names of CSC252 students who you consulted or ``N/A'' <br>
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
 #              - CSC210 Linked List Assignment
-import math # pyright: ignore[reportUnusedImport]
+import math
 import time
 import csv          # Used to read a .csv file.
 
@@ -134,9 +134,12 @@ class HashTable:
             return revised_key
             
         elif self.hash_choice == 3:
-            pass #TODO Implement your has functions here.
+            integer = key ** (1/3)
+            remainder = key % integer
+            return remainder
         elif self.hash_choice == 4:
-            pass #TODO Implement your has functions here.
+            num = math.log(key)
+            return int(num)
         return None
     
     def insert(self, key:int, val:str) -> bool:
