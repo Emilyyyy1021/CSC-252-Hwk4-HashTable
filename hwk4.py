@@ -64,7 +64,10 @@ class LinkedList:
         last.next = new_node  # Make the new node the next node of the last node
 
     def removeAfter(self, key:int):
-        """
+        """ Remove the node in a linked list if they have given key
+        : param key: (int) The key that is converted to the index of the location of value through hash function
+        
+        >>> 
         
         """
         
@@ -82,23 +85,18 @@ class LinkedList:
                 current.next = current.next.next
 
             current = current.next
-                
-        # prev = self.head 
-        # if prev.next is None:
-        #     return None
-        # current = prev.next
-        # while current.next:  
-        #     if current.key == key:
-        #         prev = current.next
-        #     current = current.next
+
 
     def list_length(self)-> int:
-        """Find the length of the linked list
+        """Find the length of the linked list that contains proper 
+        : return : (int) The length of the linked list
         
+        >>> list.list_length()
+        2
         """
         count = 0
         node = self.head
-        if node == None:
+        if node is None:
             return count
         else:
             while node != None:
@@ -239,6 +237,8 @@ class HashTable:
                 list = self.array[i]
                 count += list.list_length()
 
+        print(count)
+
         # # Calculate load factor using the equation: /total number
         load_factor = count/self.size
 
@@ -249,11 +249,38 @@ class HashTable:
         return False
     
     def reHash(self) -> bool:
-        # Create an array with double original size
-        # new_arr = new_array(2*self.size)
+        """ Resize the hash table if our hash table is over load factor
+        :return : (bool) Whether the hash table is resized
+
+        >>>
         
-        # 
-        return False
+        """
+        # Check whether the hash table is over load factor
+        # If true, reside the hash table
+        if HashTable.isOverLoadFactor(self):
+            # Create an array with double original size
+            new_size = self.size * 2
+            new_arr = [LinkedList()] * new_size
+
+            self.size = new_size
+
+            # Loop through original array
+            # Let each key go through hash function again
+            # Add key, value pair to the new array
+            for i in range(len(self.array)):
+                node = self.array[i].head
+                while node is not None:
+                    index = HashTable.hashFunc(self, node.key)
+                    if index is not None:
+                        new_arr[index].insertAfter(node.key, node.value)
+                    node = node.next
+
+            # After the loop, update the array in constructor as the new_array
+            self.array = new_arr
+            # 
+            return True
+        else:
+            return False
 
 def testMain() -> None:            
     # Use this function to test your code as you develop, especially your singly-linked list. 
