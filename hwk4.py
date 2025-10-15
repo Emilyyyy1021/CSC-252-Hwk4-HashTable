@@ -125,6 +125,10 @@ class LinkedList:
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
+        """Class to instantiate the Hash Table, which is an array of linked lists. 
+        :param size: (int) The size of the array
+        :param hash_choice: (int) Choosing which has function to use
+        """
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
@@ -133,9 +137,19 @@ class HashTable:
         # self.list = LinkedList() 
     
     def __str__(self) -> str:
+        """ Returns a string representation of the Hash Table.
+        :return : (str) a visual representation of the Hash Table
+        """
         return "Hash Table"
         
     def hashFunc(self, key:int) -> int|None:
+        """Determine which hash function to use
+        :param key: (int) the key of the variable needs to be stored
+        :return : (int) the result of hash function (the index to store)
+
+        >>> hashFunc(10)
+        5
+        """
         if type(key) != int:
             return None
         if self.hash_choice == 0:
@@ -387,4 +401,5 @@ if __name__ == "__main__":
     #profilerMain()     
     #releaseMain()
     
+
 
