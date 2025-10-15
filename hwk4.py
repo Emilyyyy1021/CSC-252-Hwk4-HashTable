@@ -96,8 +96,8 @@ class HashTable:
     
     def getValue(self, key:int) -> str|None:
         """ Given key, get corresponding value if key is stored in hash table
-        :param self (Do we need to write self tho?
         :param key: (int) 
+        : return : (str|None) a string value that the key matches to or None because key DNE in hash table
 
         >>> value = getValue(1)
         >>> print(value)
@@ -123,6 +123,25 @@ class HashTable:
         return False
     
     def isOverLoadFactor(self) -> bool:
+        """ Calculate the loaf factor of a hash table and check whether LF is greater than 0.7
+        :return : (bool) whether the hash table is overloaded or not
+
+        >>> overloaded = isOverLoadFactor()
+        True
+        """
+        # Find filled blocks in array
+        count = 0
+        for i in range(len(self.array)):
+            if self.array[i] != 0:
+                count += 1
+
+        # Calculate load factor using the equation: /total number
+        load_factor = count/len(self.array)
+
+        # Check whether the hash table is overloaded
+        if load_factor >= 0.7:
+            return True
+        
         return False
     
     def reHash(self) -> bool:
