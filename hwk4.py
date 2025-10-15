@@ -124,7 +124,9 @@ class HashTable:
             return None
 
         # If key exists: return value
-        value = str(self.array[index]) # Is it correct?
+        value = str(self.array[index]) # Is it correct? 
+
+        # return self.array[index].head.value #type: ignore
 
         return value
 
@@ -166,6 +168,8 @@ def testMain() -> None:
     print(hash_table.insert(15, "coffee"))
 
     print(hash_table.getValue(10))
+
+    print(hash_table.isOverLoadFactor())
 
 
 def releaseMain() -> None:
