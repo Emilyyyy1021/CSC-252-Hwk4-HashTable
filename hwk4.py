@@ -66,6 +66,7 @@ class HashTable:
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
         self.array = new_array(size)
+        self.list = LinkedList()
     
     def __str__(self) -> str:
         return "Hash Table"
@@ -90,7 +91,7 @@ class HashTable:
         if index is None: #no index
             return False
         # index exsists
-        #LinkedList.insertAfter(index, value)
+        self.list.insertAfter(index, val)
         return True
     
     def getValue(self, key:int) -> str|None:
