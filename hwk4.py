@@ -45,6 +45,11 @@ class LinkedList:
     def __init__(self):
         self.head:  HashNode | None = None
     
+    def insertAtBeginning(self, key: int, value: str):
+        node = HashNode(key, value)  # Create a new node 
+        node.next = self.head  # Next for new node becomes the current head
+        self.head = node  # Head now points to the new node
+
     def insertAfter(self, key: int, value: str):
         #I just feel like I want the new node to be at the end
         #it can be the first one, and it will be more efficient
@@ -57,7 +62,15 @@ class LinkedList:
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
-    def removeAfter(self, key:int, value: str):
+    def remove(self, key:int, value: str):
+        # prev = self.head 
+        # if prev.next is None:
+        #     return None
+        # current = prev.next
+        # while current.next:  
+        #     if current.key == key:
+        #         prev = current.next
+        #     current = current.next
         pass
 
 class HashTable:
@@ -95,8 +108,8 @@ class HashTable:
         # index exsists
         if self.array[index] == 0:
             self.array[index] = LinkedList() #type: ignore
-        linked_list: LinkedList = self.array[index]  #type: ignore
-        linked_list.insertAfter(key, val)
+        inside_list: LinkedList = self.array[index]  #type: ignore
+        inside_list.insertAfter(key, val)
 
         return True 
     
@@ -126,8 +139,13 @@ class HashTable:
         # If key exists: return value
         value = str(self.array[index]) # Is it correct? 
 
-        # return self.array[index].head.value #type: ignore
+        node = self.array[index].head #type:ignore
 
+        # while node.next is not None: #type:ignore
+        #     if node.key == key: #type:ignore
+        #         return node.value #type:ignore
+        #     node = node.next #type:ignore
+            
         return value
 
     def remove(self, key:int) -> bool:
