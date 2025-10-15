@@ -32,7 +32,7 @@ class HashNode:
         """
         self.key = key
         self.value = value
-        self.next: HashNode | None = None
+        self.next: HashNode|None = None
         
     def __str__(self) -> str:
         """ Returns a string representation of the object.
@@ -90,14 +90,29 @@ class LinkedList:
         #     current = current.next
         pass
 
+    def list_length(self)-> int:
+        """Find the length of the linked list
+        
+        """
+        count = 0
+        node = self.head
+        if node == None:
+            return count
+        else:
+            while node != None:
+                count += 1
+                node = node.next
+
+            return count
+
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
         self.size = size
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
-        self.array = new_array(size) 
-        # self.array = [None] * size
-        self.list = LinkedList() 
+        # self.array = new_array(size) 
+        self.array =[LinkedList()] * size
+        # self.list = LinkedList() 
     
     def __str__(self) -> str:
         return "Hash Table"
@@ -130,11 +145,10 @@ class HashTable:
         if index is None: #no index
             return False
         # index exsists
-        if self.array[index] == 0:
-            self.array[index] = LinkedList() #type: ignore
-        inside_list: LinkedList = self.array[index]  #type: ignore
-        inside_list.insertAfter(key, val)
-
+        # if self.array[index].head is None:
+        #     self.array[index] = LinkedList()
+        self.array[index].insertAfter(key, val)
+        
         return True 
     
     def getValue(self, key:int) -> str|None:
@@ -142,9 +156,10 @@ class HashTable:
         :param key: (int) 
         : return : (str|None) a string value that the key matches to or None because key DNE in hash table
 
+        >>> insert(10, "bubble tea")
         >>> value = getValue(1)
         >>> print(value)
-        "3"
+        "bubble tea"
         """
 
         # Check whether key is in hash table by letting it passes through hash function
@@ -157,20 +172,23 @@ class HashTable:
         if index > len(self.array) or index < 0:
             return None
         
-        if self.array[index] == 0:
+        if self.array[index].head is None:
             return None
         else:
             # If key exists: loop through the linked list to find the matching key and their value
 
-            node = self.array[index].head #type:ignore
+            node = self.array[index].head 
 
-            while node.next is not None: #type:ignore
-                if node.key == key: #type:ignore
-                    return node.value #type:ignore
-                node = node.next #type:ignore
+            while node is not None: 
+                if node.key == key: 
+                    return node.value 
+                node = node.next
             
 
     def remove(self, key:int) -> bool:
+        """
+        
+        """
         # Rewrite the pseudo code a little
         # Return FALSE if
         #               1. there is nothing in array/hash table
@@ -185,7 +203,7 @@ class HashTable:
             return False
         elif index > len(self.array) or index < 0:
             return False
-        elif self.array[index] == 0:
+        elif self.array[index].head is None:
             return False
         
         # Remove key value pair if key exists
@@ -193,7 +211,7 @@ class HashTable:
         if key != self.array[index]:
             return False
         else:
-            self.array[index] = 0
+            self.array[index].head = None
             return True
     
     def isOverLoadFactor(self) -> bool:
@@ -206,13 +224,15 @@ class HashTable:
         # Find filled blocks in array
         count = 0
         for i in range(len(self.array)):
-            if self.array[i] != 0:
-                count += 1
+            if self.array[i].head is not None:
+                # If key value pair exists, count how many nodes exists 
+                list = self.array[i]
+                count += list.list_length()
 
-        # Calculate load factor using the equation: /total number
-        load_factor = count/len(self.array)
+        # # Calculate load factor using the equation: /total number
+        load_factor = count/self.size
 
-        # Check whether the hash table is overloaded
+        # # Check whether the hash table is overloaded
         if load_factor >= 0.7:
             return True
         
