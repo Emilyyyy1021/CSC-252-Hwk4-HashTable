@@ -63,22 +63,25 @@ class LinkedList:
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
-    def remove(self, key:int, value: str):
+    def removeAfter(self, key:int):
         """
         
         """
-        # Question whether it works/we need it
-        new_node = HashNode(key, value)
         
         if self.head is None:
-            self.head = new_node
-            return
+            return None
         
-        temp = self.head
+        if self.head.key == key:
+            self.head = self.head.next
+        
+        current = self.head
 
-        while temp.next != None:
-            if temp.next.key == key:
-                temp.next = temp.next.next
+        # While c
+        while current is not None and current.next is not None:
+            if current.next.key == key:
+                current.next = current.next.next
+
+            current = current.next
                 
         # prev = self.head 
         # if prev.next is None:
@@ -88,7 +91,6 @@ class LinkedList:
         #     if current.key == key:
         #         prev = current.next
         #     current = current.next
-        pass
 
     def list_length(self)-> int:
         """Find the length of the linked list
@@ -189,13 +191,6 @@ class HashTable:
         """
         
         """
-        # Rewrite the pseudo code a little
-        # Return FALSE if
-        #               1. there is nothing in array/hash table
-        #               2. there is nothing (0) in the array of corresponding index
-        # Return TRUE if we successfully removed value and key
-        # 
-
         #If the key is not in the hash table, return false
         index = HashTable.hashFunc(self, key)
 
@@ -205,14 +200,26 @@ class HashTable:
             return False
         elif self.array[index].head is None:
             return False
-        
-        # Remove key value pair if key exists
-        # Check whether the hash function is hashing 2 keys to the same index
-        if key != self.array[index]:
-            return False
         else:
-            self.array[index].head = None
-            return True
+            # Remove key value pair if key exists
+            # Check whether the hash function is hashing 2 keys to the same index
+            length = self.array[index].list_length()
+            if length == 1:
+                self.array[index].head = None
+                return True
+            else:
+                # matching_val = self.array[index].head.value
+                self.array[index].removeAfter(key)
+                return True
+
+            # self.array[index].remove(key)
+            # return True
+
+        # if key != self.array[index]:
+        #     return False
+        # else:
+        #     self.array[index].head = None
+        #     return True
     
     def isOverLoadFactor(self) -> bool:
         """ Calculate the loaf factor of a hash table and check whether LF is greater than 0.7
@@ -255,6 +262,8 @@ def testMain() -> None:
     print(hash_table.getValue(10))
 
     print(hash_table.isOverLoadFactor())
+
+    print(hash_table.remove(10))
 
 
 def releaseMain() -> None:
