@@ -1,5 +1,5 @@
 # Name:  - Emily Wang & Tanya Chen
-# Peers:  - Olohi
+# Peers:  - Olohi, Maggie, Elaine
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
 #              - CSC210 Linked List Assignment
 import math
@@ -72,8 +72,9 @@ class LinkedList:
         """
         new_node = HashNode(key, value)  # Create a new node
         if self.head is None:
+            print("hi")
             self.head = new_node  # If the list is empty, make the new node the head
-            return
+            return True
         last = self.head 
         while last.next:  # Otherwise, traverse the list to find the last node
             last = last.next
@@ -118,6 +119,19 @@ class LinkedList:
             node = node.next
 
         return count
+    
+    def __str__(self) -> str:
+        """Returns a string representation of the object.
+        :return : (str) a string description of the Linked List object.
+        """
+        current = self.head
+        output:list[None|str] = [None]*LinkedList.list_length(self)
+        i = 0
+        while current is not None:
+            output[i] = current.__str__()
+            current = current.next
+            
+        return str(output)
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
@@ -129,14 +143,21 @@ class HashTable:
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
         # self.array = new_array(size) 
-        self.array =[LinkedList()] * size
+        self.array: list[None|LinkedList] = [None] * size
+        for i in range(size):
+            self.array[i] = LinkedList()
+        # self.array = [LinkedList()] * size
         # self.list = LinkedList() 
     
     def __str__(self) -> str:
         """ Returns a string representation of the Hash Table.
         :return : (str) a visual representation of the Hash Table
         """
-        return "Hash Table"
+        # For every index of array, if there is a key-value pair, print it out
+        str = ""
+        for i in range(self.size):
+            str += f"{i}: {self.array[i]} \n"
+        return str
         
     def hashFunc(self, key:int) -> int|None:
         """Determine which hash function to use
@@ -163,8 +184,7 @@ class HashTable:
             
         elif self.hash_choice == 3:
             integer = key ** (1/3)
-            remainder = key % integer
-            return int(remainder)
+            return integer
         elif self.hash_choice == 4:
             num = math.log(key)
             return int(num)
@@ -180,12 +200,10 @@ class HashTable:
         True
         """
         index = self.hashFunc(key) #find index with hash function
-        #print(index)
+        # print(index)
         if index is None: #no index
             return False
         # index exsists
-        # if self.array[index].head is None:
-        #     self.array[index] = LinkedList()
         self.array[index].insertAfter(key, val)
         
         return True 
@@ -229,6 +247,9 @@ class HashTable:
         :param key: (int) the key of the key value pair
         : return : (bool) 
         
+        >>> insert(10, "bubble tea")
+        >>> remove(10)
+        True
         """
         #If the key is not in the hash table, return false
         index = HashTable.hashFunc(self, key)
@@ -267,13 +288,12 @@ class HashTable:
                 list = self.array[i]
                 count += list.list_length()
 
-        print(count)
-
         # # Calculate load factor using the equation: /total number
         load_factor = count/self.size
 
         # # Check whether the hash table is overloaded
         if load_factor >= 0.7:
+            print(load_factor)
             return True
         
         return False
@@ -282,7 +302,7 @@ class HashTable:
         """ Resize the hash table if our hash table is over load factor
         :return : (bool) Whether the hash table is resized
 
-        >>>
+        >>> hash_table.reHash()
         
         """
         # Check whether the hash table is over load factor
@@ -316,11 +336,16 @@ def testMain() -> None:
     # Use this function to test your code as you develop, especially your singly-linked list. 
     # Review, but do not use, profileMain or releaseMain until you are well into development.
     hash_table = HashTable(10, 0)
+
     print(hash_table.insert(10, "bubble tea"))
     print(hash_table.insert(15, "coffee"))
 
+    print(hash_table)
+
     print(hash_table.getValue(10))
     print(hash_table.getValue(9))
+
+    print(hash_table.__str__())
 
     print(hash_table.isOverLoadFactor())
 
@@ -328,9 +353,6 @@ def testMain() -> None:
 
     print(hash_table.remove(10))
     print(hash_table.reHash())
-
-    releaseMain()
-    profilerMain()
 
 
 def releaseMain() -> None:
@@ -424,8 +446,8 @@ def profilerMain() -> None:
 if __name__ == "__main__":
     # Swap these options to profile or test your code.
     testMain()
-    #profilerMain()     
-    #releaseMain()
+    profilerMain()     
+    releaseMain()
     
 
 
