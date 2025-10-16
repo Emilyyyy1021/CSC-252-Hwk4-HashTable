@@ -46,7 +46,7 @@ class LinkedList:
     def __init__(self):
         """ Constructor of linked list. Initial list is empty.  
         """
-        self.head:  HashNode | None = None
+        self.head: HashNode | None = None
     
     def insertAtBeginning(self, key: int, value: str) -> None:
         """ Insert a node into linked list containing the info of the key and the value. 
@@ -141,9 +141,11 @@ class HashTable:
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
         # self.array = new_array(size) 
-        self.array: list[None|LinkedList] = [None] * size
-        for i in range(size):
-            self.array[i] = LinkedList()
+        # self.array: list[None|LinkedList] = [None] * size
+        # for i in range(size):
+        #     self.array[i] = LinkedList()
+        
+        self.array: list[LinkedList] = [LinkedList() for _ in range(size)]
 
     
     def __str__(self) -> str:
@@ -313,7 +315,9 @@ class HashTable:
         if HashTable.isOverLoadFactor(self):
             # Create an array with double original size
             new_size = self.size * 2
-            new_arr: list[None|LinkedList] = [None] * new_size
+            # new_arr: list[None|LinkedList] = [None] * new_size
+            new_arr: list[LinkedList] = [LinkedList() for _ in range(new_size)]
+
             for i in range(new_size):
                 new_arr[i] = LinkedList()
 
@@ -448,8 +452,8 @@ def profilerMain() -> None:
 
 if __name__ == "__main__":
     # Swap these options to profile or test your code.
-    # testMain()
-    profilerMain()     
+    testMain()
+    # profilerMain()     
     # releaseMain()
     
 
