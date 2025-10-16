@@ -48,7 +48,7 @@ class LinkedList:
         """
         self.head:  HashNode | None = None
     
-    def insertAtBeginning(self, key: int, value: str):
+    def insertAtBeginning(self, key: int, value: str) -> None:
         """ Insert a node into linked list containing the info of the key and the value. 
         This will add the node as the first element of the list. 
         :param key: (int) The key to access the value
@@ -61,7 +61,7 @@ class LinkedList:
         node.next = self.head  # Next for new node becomes the current head
         self.head = node  # Head now points to the new node
 
-    def insertAfter(self, key: int, value: str):
+    def insertAfter(self, key: int, value: str) -> None:
         """ Insert a node into linked list containing the info of the key and the value. 
         This will add the node as the last element of the list. 
         :param key: (int) The key to access the value
@@ -72,20 +72,19 @@ class LinkedList:
         """
         new_node = HashNode(key, value)  # Create a new node
         if self.head is None:
-            print("hi")
             self.head = new_node  # If the list is empty, make the new node the head
-            return True
+            return None
         last = self.head 
         while last.next:  # Otherwise, traverse the list to find the last node
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
-    def removeAfter(self, key:int):
+    def removeAfter(self, key:int) -> None:
         """ Remove the node in a linked list if they have given key
         : param key: (int) The key that is converted to the index of the location of value through hash function
         
-        >>> 
-        
+        >>> nsertAfter(10, "bubble tea")
+        Remove this node
         """
         
         if self.head is None:
@@ -96,7 +95,7 @@ class LinkedList:
         
         current = self.head
 
-        # While c
+        # While current and the node after current has element, remove the next node
         while current is not None and current.next is not None:
             if current.next.key == key:
                 current.next = current.next.next
@@ -125,13 +124,12 @@ class LinkedList:
         :return : (str) a string description of the Linked List object.
         """
         current = self.head
-        output:list[None|str] = [None]*LinkedList.list_length(self)
-        i = 0
+        str = ""
         while current is not None:
-            output[i] = current.__str__()
+            str += f"{current.__str__()}"
             current = current.next
             
-        return str(output)
+        return str
 
 class HashTable:
     def __init__(self, size:int, hash_choice:int) -> None:
@@ -146,8 +144,7 @@ class HashTable:
         self.array: list[None|LinkedList] = [None] * size
         for i in range(size):
             self.array[i] = LinkedList()
-        # self.array = [LinkedList()] * size
-        # self.list = LinkedList() 
+
     
     def __str__(self) -> str:
         """ Returns a string representation of the Hash Table.
@@ -183,8 +180,9 @@ class HashTable:
             return revised_key
             
         elif self.hash_choice == 3:
-            integer = key ** (1/3)
+            integer = math.comb(key, key-1)%(key//2)
             return integer
+
         elif self.hash_choice == 4:
             num = math.log(key)
             return int(num)
@@ -203,8 +201,11 @@ class HashTable:
         # print(index)
         if index is None: #no index
             return False
+        elif index > self.size or index < 0:
+            return False
         # index exsists
-        self.array[index].insertAfter(key, val)
+        else:
+            self.array[index].insertAfter(key, val)
         
         return True 
     
@@ -302,15 +303,19 @@ class HashTable:
         """ Resize the hash table if our hash table is over load factor
         :return : (bool) Whether the hash table is resized
 
+        >>> hash_table = = HashTable(10, 0)
+        >>> hash_table.insert(10, "bubble tea")
         >>> hash_table.reHash()
-        
+        False
         """
         # Check whether the hash table is over load factor
         # If true, reside the hash table
         if HashTable.isOverLoadFactor(self):
             # Create an array with double original size
             new_size = self.size * 2
-            new_arr = [LinkedList()] * new_size
+            new_arr: list[None|LinkedList] = [None] * new_size
+            for i in range(new_size):
+                new_arr[i] = LinkedList()
 
             self.size = new_size
 
@@ -339,8 +344,6 @@ def testMain() -> None:
 
     print(hash_table.insert(10, "bubble tea"))
     print(hash_table.insert(15, "coffee"))
-
-    print(hash_table)
 
     print(hash_table.getValue(10))
     print(hash_table.getValue(9))
@@ -416,7 +419,7 @@ def releaseMain() -> None:
 
 def profilerMain() -> None:    
     # You should update these three values as you profile your implementation.
-    num_hash_implemented = 2    
+    num_hash_implemented = 5    
     initial_bucket_size = 10 
     initial_num_to_add = 100
 
@@ -445,9 +448,9 @@ def profilerMain() -> None:
 
 if __name__ == "__main__":
     # Swap these options to profile or test your code.
-    testMain()
+    # testMain()
     profilerMain()     
-    releaseMain()
+    # releaseMain()
     
 
 
