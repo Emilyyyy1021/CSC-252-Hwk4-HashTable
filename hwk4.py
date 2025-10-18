@@ -1,5 +1,5 @@
 # Name:  - Emily Wang & Tanya Chen
-# Peers:  - Olohi, Maggie, Elaine
+# Peers:  - Olohi, Maggie, Elaine, Quinn, Dani, Moya, Hayley :)
 # References:  - https://www.datacamp.com/tutorial/python-linked-lists
 #              - CSC210 Linked List Assignment
 import math
@@ -141,11 +141,11 @@ class HashTable:
         self.hash_choice = hash_choice                  # Which hash function you will use.
         #TODO Finish constructor...
         # self.array = new_array(size) 
-        # self.array: list[None|LinkedList] = [None] * size
-        # for i in range(size):
-        #     self.array[i] = LinkedList()
+        self.array: list[None|LinkedList] = [None] * size
+        for i in range(size):
+            self.array[i] = LinkedList()
         
-        self.array: list[LinkedList] = [LinkedList() for _ in range(size)]
+        # self.array: list[LinkedList] = [LinkedList() for _ in range(size)]
 
     
     def __str__(self) -> str:
@@ -315,8 +315,8 @@ class HashTable:
         if HashTable.isOverLoadFactor(self):
             # Create an array with double original size
             new_size = self.size * 2
-            # new_arr: list[None|LinkedList] = [None] * new_size
-            new_arr: list[LinkedList] = [LinkedList() for _ in range(new_size)]
+            new_arr: list[None|LinkedList] = [None] * new_size
+            # new_arr: list[LinkedList] = [LinkedList() for _ in range(new_size)]
 
             for i in range(new_size):
                 new_arr[i] = LinkedList()
@@ -424,7 +424,7 @@ def releaseMain() -> None:
 def profilerMain() -> None:    
     # You should update these three values as you profile your implementation.
     num_hash_implemented = 5    
-    initial_bucket_size = 10 
+    initial_bucket_size = 10
     initial_num_to_add = 100
 
     for i in range(0, num_hash_implemented):        
@@ -438,7 +438,7 @@ def profilerMain() -> None:
             print("Hash Map", i, "Initialized")
             start_time_create = time.time()    # Get start Time.
             #### Start of code you want to profile ####
-            
+
             # Add/Edit code to profile
             row = csv_reader.__next__() 
             hash_table.insert(int(row[0]),row[1])
@@ -452,8 +452,8 @@ def profilerMain() -> None:
 
 if __name__ == "__main__":
     # Swap these options to profile or test your code.
-    testMain()
-    # profilerMain()     
+    #testMain()
+    profilerMain()     
     # releaseMain()
     
 
